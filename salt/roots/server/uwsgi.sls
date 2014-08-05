@@ -44,8 +44,12 @@ include:
     - require:
       - file: /etc/uwsgi/uwsgi.ini
 
+/var/log/uwsgi:
+  file.directory
+
 'run uwsgi':
   service.running:
     - name: uwsgi
     - require:
       - file: /etc/init/uwsgi.conf
+      - file: /var/log/uwsgi
