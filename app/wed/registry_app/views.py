@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
+from django.template import Context, loader, Template, RequestContext
+from django.shortcuts import render_to_response
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+
+def index(request):
+    return HttpResponse("hello world!")
