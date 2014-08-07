@@ -1,4 +1,4 @@
 include:
-  - pkgs.postgres
   - .nginx
   - .uwsgi
+  - .postgres
