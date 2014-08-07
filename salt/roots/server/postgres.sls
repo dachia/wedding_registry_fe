@@ -3,6 +3,7 @@ include:
 
 django:
   postgres_user.present:
+    - password: django2235
     - superuser: True
     - inherit: True
 
