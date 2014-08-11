@@ -73,6 +73,7 @@ DATABASES = {
             'PORT': '',                      # Set to empty string for default.
         }
 }
+LOGIN_REDIRECT_URL = '/'
 
 
 # Internationalization
