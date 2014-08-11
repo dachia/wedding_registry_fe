@@ -6,5 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('registry_app.views',
     (r'^$', 'index'),
-    (r'^add_wish$', 'add_wish')
+    (r'^wish$', 'wish'),
+    (r'^wish/(?P<id>[0-9]+)/$', 'wish'),
 )

@@ -12,12 +12,18 @@ class Item(models.Model):
     taken_by = models.EmailField(blank=True)
     event = models.ForeignKey("Event")
 
+    def __unicode__(self):
+        return self.name
+
 
 class Event(models.Model):
     """Occasion entity."""
     time = models.DateTimeField()
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.title
 
 
 class EventForm(ModelForm):
