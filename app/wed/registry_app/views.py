@@ -6,3 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     return HttpResponse("hello world!")
+
+
+def add_wish(request):
+    return HttpResponse("Wish")
