@@ -5,4 +5,4 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
-    return HttpResponse("hello world!")
+    return render_to_response("layout.html")
