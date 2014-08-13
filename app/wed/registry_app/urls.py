@@ -7,7 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('registry_app.views',
     (r'^$', 'index'),
-    (r'^wish$', 'wish'),
-    (r'^wish/(?P<id>[0-9]+)/$', 'wish'),
+    (r'^event/$', 'event'),
+    (r'^event/(?P<id>[0-9]+)$', 'event'),
+    (r'^event/(?P<event_id>[0-9]+)/wish/$', 'wish'),
+    (r'^event/(?P<event_id>[0-9]+)/wish/(?P<id>[0-9]+)$', 'wish'),
     (r'^logout_view', 'logout_view'),
 )

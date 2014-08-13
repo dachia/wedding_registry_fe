@@ -1,0 +1,8 @@
+<ul>
+    {% for item in items %}
+        <li style="{% ifequal item.pk item_id %}font-weight: bold{% endifequal %}">
+            {{item}}
+            {% include "wishlist/item_controls.html"%}
+        </li>
+    {% endfor %}
+</ul>
