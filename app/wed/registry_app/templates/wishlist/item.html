@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if events %}
+<h3>Events</h3>
+{% include "wishlist/event_list.html" %}
+
+{% endif %}
+<h4>Items</h4>
+{% include "wishlist/item_list.html" %}
+<br>
+{% include "wishlist/item_form.html" %}
+{% endblock %}

@@ -1,0 +1,5 @@
+<form action="/event/{{event_id}}/wish/{{item_id|default:""}}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>

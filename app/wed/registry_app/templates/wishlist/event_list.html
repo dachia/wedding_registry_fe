@@ -1,0 +1,8 @@
+<ul>
+    {% for event in events %}
+        <li style="{% ifequal event.pk event_id %}font-weight: bold{% endifequal %}">
+            {{event}}
+            {% include "wishlist/event_controls.html"%}
+        </li>
+    {% endfor %}
+</ul>
