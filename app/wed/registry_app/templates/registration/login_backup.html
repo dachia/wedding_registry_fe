@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="col-sm-12">
+<h1>Login</h1>
+
+
+<form class="no-margin" action="." method="post"> {% csrf_token %}
+
+
+                    <div class="form-group no-margin">
+                        <label for="id_username" >Email</label>
+                        
+                        <div class="input-group">
+
+                            <input id="id_username" type="" class="form-control"
+                                   placeholder="Email" name="username">
+
+						</div>
+                        </div>
+
+
+
+                    <div class="form-group">
+                        <label for="id_password" >Password</label>
+
+                        <div class="input-group">
+                             {{ form.password.errors.as_text }}
+                            <input id="id_password" type="password" class="form-control"
+                                   placeholder="Password" name="password">
+
+                        </div>
+
+                    </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-danger">
+                        <small>Sign In</small>
+                    </button>
+
+                    <a href="/accounts/register" class="btn btn-info">
+                        <small>Register</small>
+                    </a>
+                    <div class="forgot"><a class="forgot" href="/accounts/password/reset/">Reset Password!</a></div>
+                </div>
+            </form>
+        <input type="hidden" name="next" value="/" />
+
+</div>
+ </div>
+{% endblock %}

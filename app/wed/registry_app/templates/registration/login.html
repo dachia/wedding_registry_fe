@@ -1,54 +1,176 @@
+
 {% extends "base.html" %}
 {% load i18n %}
 
 {% block content %}
-<div class="col-sm-12">
-<h1>Login</h1>
+<body class="theme-default page-signin">
 
 
-<form class="no-margin" action="." method="post"> {% csrf_token %}
+	<!-- Page background -->
+	<div id="page-signin-bg">
+		<!-- Background overlay -->
+		<div class="overlay"></div>
+		<!-- Replace this with your bg image -->
+		<img src="http://81.81.81.5/static/images/signin-bg-1.jpg" alt="">
+	</div>
+	<!-- / Page background -->
 
-    <fieldset><legend>Login to your account</legend>
+	<!-- Container -->
+	<div class="signin-container">
 
-                    <div class="form-group no-margin">
-                        <label for="id_username" >Email</label>
+		<!-- Left side -->
+		<div class="signin-info">
+			<a href="index.html" class="logo">
+				<img src="/static/assets/demo/logo-big.png" alt="" style="margin-top: -5px;">&nbsp;
+				Occasion Registry
+			</a> <!-- / .logo -->
+			<div class="slogan">
+				Simple. Flexible. Powerful.
+			</div> <!-- / .slogan -->
+			<ul>
+				<li><i class="fa fa-file-text-o signin-icon"></i>Create lists for occasions</li>
+                <li><i class="fa fa-sitemap signin-icon"></i> Share lists with friends</li>
+				<li><i class="fa fa-heart signin-icon"></i> Crafted with love</li>
+			</ul> <!-- / Info list -->
+		</div>
+		<!-- / Left side -->
 
-                        <div class="input-group">
+		<!-- Right side -->
+		<div class="signin-form">
 
-                            <input id="id_username" type="" class="form-control"
-                                   placeholder="Email" name="username">
-							{{ form.username.errors.as_text }}
-						</div>
-                        </div>
+			<!-- Form -->
+			<form class="no-margin" action="." method="post">{% csrf_token %}
+				<div class="signin-text">
+					<span>Sign In to your account</span>
+				</div> <!-- / .signin-text -->
 
 
 
-                    <div class="form-group">
-                        <label for="id_password" >Password</label>
+                 {% if form.username.errors %}<div class="form-group w-icon has-error">
+                 {%else%}
+                    <div class="form-group w-icon">
+					{% endif %}
+					<input type="text" name="username" id="id_username" class="form-control input-lg" placeholder="Username or email">
+					<span class="fa fa-user signin-form-icon"></span>
+				</div> <!-- / Username -->
 
-                        <div class="input-group">
+				{% if form.password.errors %}<div class="form-group w-icon has-error">
+                 {%else%}
+                    <div class="form-group w-icon">
+					{% endif %}
 
-                            <input id="id_password" type="password" class="form-control"
-                                   placeholder="Password" name="password">
-                            {{ form.password.errors.as_text }}
-                        </div>
+					<input type="password" name="password" id="id_password" class="form-control input-lg" placeholder="Password">
+					<span class="fa fa-lock signin-form-icon"></span>
 
-                    </div>
+				</div> <!-- / Password -->
 
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-danger">
-                        <small>Sign In</small>
-                    </button>
+				<div class="form-actions">
+					<input type="submit" value="SIGN IN" class="signin-btn bg-primary">
+					<a href="#" class="forgot-password" id="forgot-password-link">Forgot your password?</a>
+				</div> <!-- / .form-actions -->
+			</form>
+			<!-- / Form -->
 
-                    <a href="/accounts/register" class="btn btn-info">
-                        <small>Register</small>
-                    </a>
-                    <div class="forgot"><a class="forgot" href="/accounts/password/reset/">Reset Password!</a></div>
-                </div>
-            </form>
- </fieldset>
-        <input type="hidden" name="next" value="/" />
+			<!-- "Sign In with" block -->
+			<div class="signin-with">
+				<!-- Facebook -->
+				<a href="index.html" class="signin-with-btn" style="background:#4f6faa;background:rgba(79, 111, 170, .8);">Sign In with <span>Facebook</span></a>
+			</div>
+			<!-- / "Sign In with" block -->
 
-</div>
- </div>
-{% endblock %}
+			<!-- Password reset form -->
+			<div class="password-reset-form" id="password-reset-form">
+				<div class="header">
+					<div class="signin-text">
+						<span>Password reset</span>
+						<div class="close">&times;</div>
+					</div> <!-- / .signin-text -->
+				</div> <!-- / .header -->
+				
+				<!-- Form -->
+				<form action="index.html" id="password-reset-form_id">
+					<div class="form-group w-icon">
+						<input type="text" name="password_reset_email" id="p_email_id" class="form-control input-lg" placeholder="Enter your email">
+						<span class="fa fa-envelope signin-form-icon"></span>
+					</div> <!-- / Email -->
+
+					<div class="form-actions">
+						<input type="submit" value="SEND PASSWORD RESET LINK" class="signin-btn bg-primary">
+					</div> <!-- / .form-actions -->
+				</form>
+				<!-- / Form -->
+			</div>
+			<!-- / Password reset form -->
+		</div>
+		<!-- Right side -->
+	</div>
+	<!-- / Container -->
+
+	<div class="not-a-member">
+		Not a member? <a href="pages-signup.html">Sign up now</a>
+	</div>
+
+
+<script type="text/javascript">
+	// Resize BG
+	init.push(function () {
+		var $ph  = $('#page-signin-bg'),
+		    $img = $ph.find('> img');
+
+		$(window).on('resize', function () {
+			$img.attr('style', '');
+			if ($img.height() < $ph.height()) {
+				$img.css({
+					height: '100%',
+					width: 'auto'
+				});
+			}
+		});
+	});
+
+	// Show/Hide password reset form on click
+	init.push(function () {
+		$('#forgot-password-link').click(function () {
+			$('#password-reset-form').fadeIn(400);
+			return false;
+		});
+		$('#password-reset-form .close').click(function () {
+			$('#password-reset-form').fadeOut(400);
+			return false;
+		});
+	});
+
+	// Setup Sign In form validation
+	init.push(function () {
+		$("#signin-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
+		
+		// Validate username
+		$("#username_id").rules("add", {
+			required: true,
+			minlength: 3
+		});
+
+		// Validate password
+		$("#password_id").rules("add", {
+			required: true,
+			minlength: 6
+		});
+	});
+
+	// Setup Password Reset form validation
+	init.push(function () {
+		$("#password-reset-form_id").validate({ focusInvalid: true, errorPlacement: function () {} });
+		
+		// Validate email
+		$("#p_email_id").rules("add", {
+			required: true,
+			email: true
+		});
+	});
+
+	window.PixelAdmin.start(init);
+</script>
+
+</body>
+</html>
+{%endblock%}
