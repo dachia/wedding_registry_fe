@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -21,9 +22,16 @@ class Event(models.Model):
     time = models.DateTimeField()
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
+    members = models.ManyToManyField(User, related_name="events", through="UserEvent")
 
     def __unicode__(self):
         return self.title
+
+
+class UserEvent(models.Model):
+    user = models.ForeignKey(User)
+    event = models.ForeignKey("Event")
+    is_owner = models.BooleanField(default=False)
 
 
 class EventForm(ModelForm):
