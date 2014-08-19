@@ -1,5 +1,28 @@
-<form action="/event/{{event_id|default:""}}" method="POST">
+<div class="panel">
+					<div class="panel-heading">
+						<span class="panel-title">Event manager</span>
+					</div>
+					<div class="panel-body">
+
+<form class="form-inline" action="/event/{{event_id|default:""}}" method="POST">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
+    {% if form.time.errors %}
+       <div class="form-group has-error">
+    {%else%}
+        <div class="form-group">
+	{% endif %}
+
+    <input id="id_time" class="form-control input" placeholder="Time" name="time" value="{% if form.time.value %} {{form.time.value}} {%endif%}" type="text">
+     {% if form.title.errors %}
+            <div class="form-group has-error">
+    {%else%}
+        <div class="form-group">
+	{% endif %}
+    <input id="id_title" class="form-control input" placeholder="Description" maxlength="100" value="{% if form.time.value %} {{form.title.value}}{%endif%}" name="title" type="text">
+
+    </div>
+    <input type="submit" class="btn btn-info" value="{%if event_id %} Modify {%else%} Add new {%endif%} event" />
 </form>
+</div>
+<div>
+</div>

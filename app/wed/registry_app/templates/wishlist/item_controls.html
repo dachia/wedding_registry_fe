@@ -1,2 +1,13 @@
-<a href="/event/{{event_id}}/wish/{{item.pk}}">Edit</a>
-<a href="/event/{{event_id}}/wish/{{item.pk}}?act=del">Delete</a>
+<!--a href="/event/{{event_id}}/wish/{{item.pk}}">Edit</a>
+<a href="/event/{{event_id}}/wish/{{item.pk}}?act=del">Delete</a-->
+
+								<!-- Success darker background, small padding, vertically aligned text -->
+    <a href="/event/{{event_id}}/wish/{{item.pk}}" class="stat-cell bg-warning darker padding-sm valign-middle">
+									{{item}}
+	<i class="fa fa-star pull-right"></i>
+    </a>
+
+    <a href="/event/{{event_id}}/wish/{{item.pk}}?act=del" class="stat-cell bg-danger darker padding-sm valign-middle">Delete <i class="fa fa-eraser pull-right"></i></a>
+	</a>
+
+
