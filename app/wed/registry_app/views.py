@@ -10,7 +10,7 @@ from registry_app import models
 
 @login_required
 def index(request):
-    return render_to_response("layout.html")
+    return render_to_response("index.html")
 
 
 @login_required
