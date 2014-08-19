@@ -1,8 +1,19 @@
-<ul>
-    {% for membership in memberships %}
-        <li style="{% ifequal membership.event_id event_id %}font-weight: bold{% endifequal %}">
-            {{membership.event}}|{{membership.is_owner}}
-            {% include "wishlist/event_controls.html"%}
-        </li>
-    {% endfor %}
-</ul>
+<div class="panel-transparent">
+					<!-- Success background, bordered, without top and bottom borders, without left border, without padding, vertically and horizontally centered text, large text -->
+					<a href="/event/" class="stat-cell col-xs-5 bg-success bordered no-border-vr no-border-l no-padding valign-middle text-center text-lg">
+						<i class="fa fa-calendar"></i>&nbsp;&nbsp;<strong>Total events: {{memberships.count}}</strong>
+					</a> <!-- /.stat-cell -->
+					<!-- Without padding, extra small text -->
+					<div class="stat-cell col-xs-7 no-padding valign-middle">
+						<!-- Add parent div.stat-rows if you want build nested rows -->
+						<div class="stat-rows">
+							{% for membership in memberships %}
+                                <div class="stat-row">
+                                {% include "wishlist/event_controls.html"%}
+                                </div>
+                                {% endfor %}
+						</div> <!-- /.stat-rows -->
+					</div> <!-- /.stat-cell -->
+				</div>
+
+

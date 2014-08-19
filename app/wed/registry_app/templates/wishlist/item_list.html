@@ -1,8 +1,20 @@
-<ul>
-    {% for item in items %}
-        <li style="{% ifequal item.pk item_id %}font-weight: bold{% endifequal %}">
-            {{item}}
-            {% include "wishlist/item_controls.html"%}
-        </li>
-    {% endfor %}
-</ul>
+
+<div class="panel-transparent">
+					<!-- Success background, bordered, without top and bottom borders, without left border, without padding, vertically and horizontally centered text, large text -->
+					<a href="#" class="stat-cell col-xs-5 bg-warning bordered no-border-vr no-border-l no-padding valign-middle text-center text-lg">
+						<i class="fa fa-check"></i>&nbsp;&nbsp;<strong> Items: {{items.count}} </strong>
+					</a> <!-- /.stat-cell -->
+					<!-- Without padding, extra small text -->
+					<div class="stat-cell col-xs-7 no-padding valign-middle">
+						<!-- Add parent div.stat-rows if you want build nested rows -->
+						<div class="stat-rows">
+							 {% for item in items %}
+                                <div class="stat-row">
+                                {% include "wishlist/item_controls.html"%}
+                                </div>
+                                {% endfor %}
+						</div> <!-- /.stat-rows -->
+					</div> <!-- /.stat-cell -->
+				</div>
+
+

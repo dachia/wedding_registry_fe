@@ -1,3 +1,12 @@
-<a href="/event/{{membership.event.id}}">Edit</a>
-<a href="/event/{{membership.event.id}}?act=del">Delete</a>
-<a href="/event/{{membership.event.id}}/wish/"> Items </a>
+
+								<!-- Success darker background, small padding, vertically aligned text -->
+    <a href="/event/{{membership.event.id}}" class="stat-cell bg-success darker padding-sm valign-middle">
+									{{membership.event}}
+
+    </a>
+    <a href="/event/{{membership.event.id}}/wish/" class="stat-cell bg-info  bordered  no-border-vr no-border-l darker padding-sm valign-middle"> Wish list  <i class="fa fa-edit pull-right"></i></a>
+
+    <a href="/event/{{membership.event.id}}?act=del" class="stat-cell bg-danger darker padding-sm valign-middle">Delete <i class="fa fa-eraser pull-right"></i></a>
+	</a>
+
+

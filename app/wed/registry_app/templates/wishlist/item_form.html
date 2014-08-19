@@ -1,5 +1,27 @@
-<form action="/event/{{event_id}}/wish/{{item_id|default:""}}" method="POST">
+<div class="panel">
+					<div class="panel-heading">
+						<span class="panel-title">Item manager</span>
+					</div>
+					<div class="panel-body">
+
+<form class="form-inline" action="/event/{{event_id}}/wish/{{item_id|default:""}}" method="POST">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
+     {% if form.name.errors %}
+       <div class="form-group has-error">
+    {%else%}
+        <div class="form-group">
+	{% endif %}
+
+    <input id="id_name" class="form-control input" placeholder="Gift name" name="name" value="{% if form.name.value %} {{form.name.value}} {%endif%}" type="text">
+     {% if form.link.errors %}
+            <div class="form-group has-error">
+    {%else%}
+        <div class="form-group">
+	{% endif %}
+    <input id="id_link" class="form-control input" placeholder="Paste link" maxlength="100" value="{% if form.link.value %} {{form.link.value}}{%endif%}" name="link" type="text">
+
+    </div>
+    <input type="submit" class="btn btn-info" value="{%if item_id %} Modify {%else%} Add new {%endif%} item" />
 </form>
+</div>
+</div>
