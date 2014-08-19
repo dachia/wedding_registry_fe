@@ -10,22 +10,24 @@ from registry_app import models
 
 @login_required
 def index(request):
-    return render_to_response("layout.html")
+    return redirect("/event")
 
 
 @login_required
 def wish(request, event_id=None, id=None):
     """Manage wish items and stuff"""
-    Event, Form, Item = models.Event, models.ItemForm, models.Item
-    event, item = get_object_or_404(Event, pk=event_id), get_object_or_404(Item, pk=id) if id else None
+    membership, user = get_object_or_404(models.UserEvent, event_id=event_id, user=request.user), request.user
+    item = get_object_or_404(models.Item, pk=id) if id else None
+    event = membership.event
+
     go_back = redirect("/event/%s/wish" % event.id)
     action = request.GET.get("act")
 
     if request.method == "GET" and not action:
-        form = Form(instance=item) if event else Form()
+        form = models.ItemForm(instance=item) if event else models.ItemForm()
 
     elif request.method == "POST":
-        form = Form(request.POST, instance=item) if item else Form(request.POST)
+        form = models.ItemForm(request.POST, instance=item) if item else models.ItemForm(request.POST)
         if form.is_valid():
 
             if item:
@@ -43,47 +45,59 @@ def wish(request, event_id=None, id=None):
     else:
         raise Http404
 
-    events = Event.objects.all()
+    memberships = user.userevent_set.all()
     items = event.item_set.all()
 
     return render_to_response("wishlist/item.html",
-                              {"events": events,
+                              {"memberships": memberships,
                                "items": items,
-                               "event_id": event.pk if event else None,
+                               "event_id": event.pk,
                                "item_id": item.pk if item else None,
                                "form": form
                                }, RequestContext(request))
 
 
+@login_required
 def event(request, id=None):
     """Add event"""
-    Form, Event = models.EventForm, models.Event
-    event = get_object_or_404(Event, pk=id) if id else None
+    membership, user = get_object_or_404(models.UserEvent, event_id=id, user=request.user) if id else None, request.user
+    event = membership.event if membership else None
+
     go_back = redirect("/event")
     action = request.GET.get("act")
 
     if request.method == "GET" and not action:
-        form = Form(instance=event) if event else Form()
+        form = models.EventForm(instance=event) if event else models.EventForm()
 
-    elif request.method == "POST":
-        form = Form(request.POST, instance=event) if event else Form(request.POST)
+    elif request.method == "POST" and (not membership or membership.is_owner):
+        form = models.EventForm(request.POST, instance=event) if event else models.EventForm(request.POST)
         if form.is_valid():
-            form.save()
+            instance = form.save()
+
+            if not event:
+                membership = models.UserEvent(user=user,
+                                       event=instance,
+                                       is_owner=True)
+                membership.save()
+
             return go_back
 
-    elif request.method == "GET" and action == "del":
+    elif request.method == "GET" and action == "del" and (not membership or membership.is_owner):
         event.delete()
         return go_back
 
     else:
         raise Http404
 
-    events = Event.objects.all()
+    memberships = user.userevent_set.all()
 
     return render_to_response("wishlist/event.html",
                               {"form": form,
                                "event_id": event.id if event else None,
-                               "events": events}, RequestContext(request))
+                               "memberships": memberships}, RequestContext(request))
+
+
+
 
 @login_required
 def logout_view(request):
