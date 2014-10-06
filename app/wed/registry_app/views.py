@@ -1,3 +1,4 @@
+from keepboo_opengraph import opengraph
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.template import Context, loader, Template, RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -29,11 +30,12 @@ def wish(request, event_id=None, id=None):
     elif request.method == "POST":
         form = models.ItemForm(request.POST, instance=item) if item else models.ItemForm(request.POST)
         if form.is_valid():
-
             if item:
                 form.save()
             else:
                 instance = form.save(commit=False)
+                instance.open_graph = opengraph.OpenGraph(url=instance.link)
+                print instance.open_graph
                 event.item_set.add(instance)
 
             return go_back
@@ -71,7 +73,9 @@ def event(request, id=None):
 
     elif request.method == "POST" and (not membership or membership.is_owner):
         form = models.EventForm(request.POST, instance=event) if event else models.EventForm(request.POST)
+        print "POST"
         if form.is_valid():
+            print "VALIDT"
             instance = form.save()
 
             if not event:
