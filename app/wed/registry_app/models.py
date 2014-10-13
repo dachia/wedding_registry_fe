@@ -33,8 +33,20 @@ class Event(models.Model):
 
 class UserEvent(models.Model):
     user = models.ForeignKey(User)
-    event = models.ForeignKey("Event")
+    event = models.ForeignKey(Event)
     is_owner = models.BooleanField(default=False)
+
+
+class Contact(models.Model):
+    user = models.ForeignKey(User)
+    email = models.EmailField()
+    name = models.CharField(blank=True, max_length=100)
+
+
+class ContactForm(ModelForm):
+    class Meta:
+        model = Contact
+        fields = ["email", "name"]
 
 
 class EventForm(ModelForm):

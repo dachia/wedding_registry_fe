@@ -35,7 +35,6 @@ def wish(request, event_id=None, id=None):
             else:
                 instance = form.save(commit=False)
                 instance.open_graph = opengraph.OpenGraph(url=instance.link)
-                print instance.open_graph
                 event.item_set.add(instance)
 
             return go_back
@@ -73,9 +72,7 @@ def event(request, id=None):
 
     elif request.method == "POST" and (not membership or membership.is_owner):
         form = models.EventForm(request.POST, instance=event) if event else models.EventForm(request.POST)
-        print "POST"
         if form.is_valid():
-            print "VALIDT"
             instance = form.save()
 
             if not event:
@@ -101,7 +98,34 @@ def event(request, id=None):
                                "memberships": memberships}, RequestContext(request))
 
 
+@login_required
+def contact(request, id=None):
+    """Create view edit contact"""
+    user = request.user
+    contact = get_object_or_404(models.Contact, id=id) if id else None
+    go_back = redirect("/contact")
+    action = request.GET.get("act")
 
+    if request.method == "GET" and not action:
+        form = models.ContactForm(instance=contact) if event else models.ContactForm()
+
+    elif request.method == "POST":
+        form = models.ContactForm(request.POST, instance=contact) if contact else models.ContactForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = user
+            instance.save()
+            return go_back
+    elif request.method == "GET" and action == "del" and contact.user == user:
+        contact.delete()
+        return go_back
+    else:
+        raise Http404
+    contacts = user.contact_set.all()
+    return render_to_response("contact/contact.html",
+                              {"form": form,
+                               "contacts": contacts,
+                               "contact_id": contact.id if contact else None}, RequestContext(request))
 
 @login_required
 def logout_view(request):

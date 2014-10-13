@@ -1,0 +1,14 @@
+<div class="reset-this">
+<div id="wrapper">
+	<div id="columns">
+		<div class=" pin">
+      {% for contact in contacts %}
+			<p>
+        {{ contact.email }}
+			  {% include "contact/contact_controls.html"%}
+      </p>
+      {% endfor %}
+		</div>
+  </div>
+</div>
+</div>
