@@ -1,10 +1,18 @@
-from keepboo_opengraph import opengraph
+import uuid
+import base64
+
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
-from django.template import Context, loader, Template, RequestContext
+from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from keepboo_opengraph import opengraph
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 from registry_app import models
 
@@ -126,6 +134,60 @@ def contact(request, id=None):
                               {"form": form,
                                "contacts": contacts,
                                "contact_id": contact.id if contact else None}, RequestContext(request))
+
+
+@login_required
+def invite(request, event_id):
+    """Invite all contacts for event_id (send emails)"""
+    user, event = request.user, get_object_or_404(models.Event, id=event_id)
+    contacts = user.contact_set.all()
+
+    for contact in contacts:
+        instance = models.Invite()
+        instance.event = event
+        instance.contact = contact
+        instance.token = get_a_Uuid()
+        instance.save()
+
+        url = "http://81.81.81.6/guest/%s" % instance.token
+        html_body = render_to_string("email/invite.html", {"guest_url": url})
+        txt_body = render_to_string("email/invite.txt", {"guest_url": url})
+
+        msg = EmailMultiAlternatives('Invitation', txt_body, settings.EMAIL_HOST_USER, [contact.email])
+        msg.attach_alternative(html_body, "text/html")
+        msg.send()
+
+        instance.sent = True
+        instance.save()
+
+    return redirect("/event")
+
+
+def get_a_Uuid():
+    r_uuid = base64.urlsafe_b64encode(uuid.uuid4().bytes)
+    return r_uuid.replace('=', '')
+
+
+def guest(request, token):
+    user = request.user
+
+    if not user.is_anonymous():
+        # add event to user
+        pass
+    else:
+        # create a user and add him to event
+        invite = get_object_or_404(models.Invite, token=token)
+        if not invite.user:
+            # check if user with this email exists
+            user = User.objects.create_user(token, invite.contact.email, token)
+            membership = models.UserEvent(user=user,
+                                          event=invite.event,
+                                          is_owner=False)
+            membership.save()
+            user = authenticate(username=token, password=token)
+            login(request, user)
+    return redirect("/event")
+
 
 @login_required
 def logout_view(request):

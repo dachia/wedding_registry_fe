@@ -43,6 +43,14 @@ class Contact(models.Model):
     name = models.CharField(blank=True, max_length=100)
 
 
+class Invite(models.Model):
+    contact = models.ForeignKey(Contact)
+    event = models.ForeignKey(Event)
+    user = models.ForeignKey(User, null=True)
+    token = models.CharField(max_length=100)
+    sent = models.BooleanField(default=False)
+
+
 class ContactForm(ModelForm):
     class Meta:
         model = Contact
