@@ -1,7 +1,6 @@
 import uuid
 import base64
 
-from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError, Http404
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -10,7 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from keepboo_opengraph import opengraph
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 from registry_app import models
 
@@ -150,11 +152,11 @@ def invite(request, event_id):
         url = "http://81.81.81.6/guest/%s" % instance.token
         html_body = render_to_string("email/invite.html", {"guest_url": url})
         txt_body = render_to_string("email/invite.txt", {"guest_url": url})
-        send_mail(subject='Subject here',
-                  message=txt_body,
-                  from_email=settings.EMAIL_HOST_USER, recipient_list=[contact.email],
-                  fail_silently=False,
-                  html_message=html_body)
+
+        msg = EmailMultiAlternatives('Invitation', txt_body, settings.EMAIL_HOST_USER, [contact.email])
+        msg.attach_alternative(html_body, "text/html")
+        msg.send()
+
         instance.sent = True
         instance.save()
 
@@ -167,7 +169,24 @@ def get_a_Uuid():
 
 
 def guest(request, token):
-    pass
+    user = request.user
+
+    if not user.is_anonymous():
+        # add event to user
+        pass
+    else:
+        # create a user and add him to event
+        invite = get_object_or_404(models.Invite, token=token)
+        if not invite.user:
+            # check if user with this email exists
+            user = User.objects.create_user(token, invite.contact.email, token)
+            membership = models.UserEvent(user=user,
+                                          event=invite.event,
+                                          is_owner=False)
+            membership.save()
+            user = authenticate(username=token, password=token)
+            login(request, user)
+    return redirect("/event")
 
 
 @login_required
