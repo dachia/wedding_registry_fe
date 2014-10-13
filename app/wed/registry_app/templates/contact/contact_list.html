@@ -1,0 +1,8 @@
+<div>
+  {% for contact in contacts %}
+  <p>
+    {{ contact.email }}
+    {% include "contact/contact_controls.html"%}
+  </p>
+  {% endfor %}
+</div>

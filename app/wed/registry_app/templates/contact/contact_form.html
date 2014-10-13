@@ -1,0 +1,15 @@
+<div class="panel">
+  <div class="panel-heading">
+    <span class="panel-title">Contact manager</span>
+  </div>
+
+  <div class="panel-body">
+    <form class="form-inline" action="/contact/{{contact_id|default:''}}" method="POST">
+      {% csrf_token %}
+      <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+        <input id="id_email" class="form-control input" placeholder="Enter email" value="{{form.email.value|default_if_none:''}}" name="email" type="text">
+      </div>
+      <input type="submit" class="btn btn-info" value="{%if contact_id %} Modify {%else%} Add new {%endif%} contact" />
+    </form>
+  </div>
+</div>
