@@ -2,7 +2,17 @@
 {% load i18n %}
 
 {% block content %}
+<div id="page-signin-bg">
 
+		<!-- Background overlay -->
+		<div class="overlay"></div>
+		<!-- Replace this with your bg image -->
+		<img src="http://81.81.81.5/static/images/background.jpg" alt="">
+	</div>
+	<!-- / Page background -->
+
+	<!-- Container -->
+	<div class="signin-container">
 		<!-- Left side -->
 		<div class="signin-info">
 			<a href="index.html" class="logo">
@@ -92,9 +102,9 @@
 	<!-- / Container -->
 
 	<div class="not-a-member">
-		Not a member? <a href="pages-signup.html">Sign up now</a>
+		Not a member? <a href="/accounts/register">Sign up now</a>
 	</div>
-
+</div>
 
 <script type="text/javascript">
 	// Resize BG
