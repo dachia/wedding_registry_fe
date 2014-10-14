@@ -1,15 +1,22 @@
-<div class="reset-this">
-<div id="wrapper">
-	<div id="columns">
-		<div class="pin">
-      {% for item in items %}
-			<img src="{{ item.open_graph.image }}" />
-			<p>
+	<div id="hero-masonry">
+        {% for item in items %}
+		<div class="hero-item has-example is-hidden">
+			<a href="#">
+            <img src="{{ item.open_graph.image }}" />
+			<p class="example-title">
 				{{ item.open_graph.title }}
-			  {% include "wishlist/item_controls.html"%}
+
       </p>
+           </a>
+      </div>
       {% endfor %}
 		</div>
-  </div>
-</div>
-</div>
+<script type="text/javascript" src="http://81.81.81.5/static/javascripts/masonry.pkgd.min.js"></script>
+<script type="text/javascript">
+var container = document.querySelector('#hero-masonry');
+var msnry = new Masonry( container, {
+  // options
+  columnWidth: 100,
+  itemSelector: '.hero-item has-example is-hidden'
+});
+</script>
