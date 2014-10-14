@@ -70,7 +70,7 @@
 
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown">
-									<img src="assets/demo/avatars/1.jpg" alt="">
+
 									<span>{{user.username}}</span>
 								</a>
 								<ul class="dropdown-menu">
@@ -87,7 +87,9 @@
 			</div> <!-- / #main-navbar-collapse -->
 		</div> <!-- / .navbar-inner -->
 	</div>
+
 <div class="signin-container">
+{% include "wishlist/item_form.html" %}
 
 
 {% endif %}
@@ -95,5 +97,5 @@
 <h1 style="color: white;">Wishlist</h1>
 {% include "wishlist/item_list.html" %}
 <br>
-{% include "wishlist/item_form.html" %}
+
 {% endblock %}
