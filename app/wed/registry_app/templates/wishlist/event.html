@@ -36,24 +36,19 @@
 
 			<div id="main-navbar-collapse" class="collapse navbar-collapse main-navbar-collapse">
 				<div>
-					<ul class="nav navbar-nav">
-						<li>
-							<a href="#">Home</a>
+
+                    <ul class="nav navbar-nav">
+                        <li selected>
+							<a href="event_form"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;<b>New Event</b></a>
 						</li>
-                        {% for membership in memberships %}
+					    {% for membership in memberships %}
                                 <li>
                                     <a href="/event/{{membership.event.id}}/wish/">{{membership.event}}</a>
                                 </li>
                                 {% endfor %}
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-							<ul class="dropdown-menu">
-								<li><a href="#">First item</a></li>
-								<li><a href="#">Second item</a></li>
-								<li class="divider"></li>
-								<li><a href="#">Third item</a></li>
-							</ul>
-						</li>
+
+
+
 					</ul> <!-- / .navbar-nav -->
 
 					<div class="right clearfix">
@@ -99,7 +94,7 @@
 		</div> <!-- / .navbar-inner -->
 	</div>
 <div class="signin-container">
-{% include "wishlist/event_list.html" %}
+
 
 {% endif %}
 
